@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-table-author" author="pvale">
+        <createTable tableName="T_AUTHOR">
+            <column name="ID" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="PK_AUTHOR_ID"/>
+            </column>
+            <column name="NAME" type="VARCHAR2(256)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UK_AUTHOR_NAME"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-book" author="pvale">
+        <preConditions>
+            <tableExists tableName="T_AUTHOR"/>
+        </preConditions>
+        <createTable tableName="T_BOOK">
+            <column name="ID" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="PK_BOOK_ID"/>
+            </column>
+            <column name="NAME" type="VARCHAR2(256)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="AUTHOR_ID" type="UUID">
+                <constraints nullable="false" foreignKeyName="FK_BOOK_AUTHOR_ID" deleteCascade="true"/>
+            </column>
+            <column name="PUBLICATION_DATE" type="TIMESTAMP"/>
+            <column name="READ_DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
